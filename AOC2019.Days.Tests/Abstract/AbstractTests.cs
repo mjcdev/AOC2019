@@ -14,5 +14,12 @@ namespace AOC2019.Days.Tests.Abstract
 
             return File.ReadAllLines(filePath).Select(function);
         }
+
+        public IEnumerable<T> ReadCommaSeperatedLine<T>(string fileName, Func<string, T> function)
+        {
+            var filePath = Path.Combine("Inputs", fileName);
+
+            return File.ReadAllText(filePath).Split(',').Select(function);
+        }
     }
 }
