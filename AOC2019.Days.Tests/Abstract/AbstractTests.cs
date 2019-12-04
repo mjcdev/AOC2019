@@ -20,6 +20,6 @@ namespace AOC2019.Days.Tests.Abstract
             var filePath = Path.Combine("Inputs", fileName);
 
             return File.ReadAllText(filePath).Split(',').Select(function);
-        }
+        }        
     }
 }
