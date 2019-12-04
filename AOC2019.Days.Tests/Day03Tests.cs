@@ -27,5 +27,13 @@ namespace AOC2019.Days.Tests
 
             var result = new Day03().ManhattanDistanceOfNearestPoint(input);
         }
+
+        [Fact]
+        public void Day03PartTwo()
+        {
+            var input = ReadLineSeperatedFile("Day03.txt", s => s.Split(","));
+
+            var result = new Day03().MinimumCombinedSteps(input);
+        }
     }
 }

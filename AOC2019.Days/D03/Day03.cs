@@ -15,12 +15,52 @@ namespace AOC2019.Days.D03
 
         public int ManhattanDistanceOfNearestPoint(IEnumerable<IEnumerable<string>> input)
         {
-            List<List<Coordinate>> coordinatesByWire = new List<List<Coordinate>>();
+            var wires = BuildWires(input);
+
+            var wire1 = new HashSet<Coordinate>(wires[0]);
+            var wire2 = new HashSet<Coordinate>(wires[1]);
+
+            var overlap = wire1.Where(c => wire2.Contains(c));                        
+            
+            return overlap.Min(c => c.CalculateManhattanDistance());
+        }
+
+        public int MinimumCombinedSteps(IEnumerable<IEnumerable<string>> input)
+        {
+            var wires = BuildWires(input);
+
+            var minimumDistance = int.MaxValue;
+
+            var wire1 = wires[0];
+            var wire2 = wires[1];
+
+            for (var one = 0; one < wire1.Count; one++)
+            {
+                for (var two = 0; two < wire2.Count; two++)
+                {
+                    if (wire1[one].Equals(wire2[two]))
+                    {
+                        var distance = one + two + 2;
                         
+                        if (distance < minimumDistance)
+                        {
+                            minimumDistance = distance;
+                        }
+                    }
+                }
+            }
+
+            return minimumDistance;
+        }
+
+        public List<List<Coordinate>> BuildWires(IEnumerable<IEnumerable<string>> input)
+        {
+            List<List<Coordinate>> coordinatesByWire = new List<List<Coordinate>>();
+
             foreach (var wire in input)
             {
                 var coordinatesForWire = new List<Coordinate>();
-                
+
                 foreach (var instruction in wire)
                 {
                     MapLine(instruction, coordinatesForWire);
@@ -29,12 +69,7 @@ namespace AOC2019.Days.D03
                 coordinatesByWire.Add(coordinatesForWire);
             }
 
-            var wire1 = new HashSet<Coordinate>(coordinatesByWire[0]);
-            var wire2 = new HashSet<Coordinate>(coordinatesByWire[1]);
-
-            var overlap = wire1.Where(c => wire2.Contains(c));                        
-            
-            return overlap.Min(c => c.CalculateManhattanDistance());
+            return coordinatesByWire;
         }
         
         public List<Coordinate> MapLine(string input, List<Coordinate> wire)
