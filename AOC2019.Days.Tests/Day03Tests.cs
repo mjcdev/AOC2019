@@ -28,7 +28,7 @@ namespace AOC2019.Days.Tests
             var result = new Day03().ManhattanDistanceOfNearestPoint(input);
         }
 
-        [Fact]
+        [Fact(Skip ="Slow")]
         public void Day03PartTwo()
         {
             var input = ReadLineSeperatedFile("Day03.txt", s => s.Split(","));
