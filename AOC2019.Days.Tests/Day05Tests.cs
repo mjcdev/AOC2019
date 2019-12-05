@@ -24,37 +24,15 @@ namespace AOC2019.Days.Tests
         {
             var input = ReadCommaSeperatedLine("Day05.txt", i => int.Parse(i)).ToArray();
 
-            var output = new Day05().Execute(input);
+            var output = new Day05().Execute(input, 1);
         }
 
         [Fact]
-        public void DayTwoPartTwo()
+        public void DayFivePartTwo()
         {
-            var anticipatedResult = 19690720;
+            var input = ReadCommaSeperatedLine("Day05.txt", i => int.Parse(i)).ToArray();
 
-            for (var noun = 0; noun <= 99; noun++)
-            {
-                for (var verb = 0; verb <= 99; verb++)
-                {
-                    var input = ReadCommaSeperatedLine<int>("Day02.txt", i => int.Parse(i)).ToArray();
-
-                    input[1] = noun;
-                    input[2] = verb;
-
-                    var output = new Day05().Execute(input);
-
-                    var result = output[0];
-
-                    if (result == anticipatedResult)
-                    {
-                        var answer = (100 * noun) + verb;
-
-                        _output.WriteLine(answer.ToString());
-
-                        return;
-                    }
-                }
-            }
+            var output = new Day05().Execute(input, 5);
         }
     }
 }
