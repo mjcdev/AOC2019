@@ -6,7 +6,17 @@ namespace AOC2019.Days.D04
 {
     public class Day04
     {
-        public int CalculateMatches(int lower, int upper)
+        public int CalculateMatchesPartOne(int lower, int upper)
+        {
+            return CalculateMatches(lower, upper, i => HasDoublePartOne(i));
+        }
+
+        public int CalculateMatchesPartTwo(int lower, int upper)
+        {
+            return CalculateMatches(lower, upper, i => HasDoublePartTwo(i));
+        }
+
+        public int CalculateMatches(int lower, int upper, Func<int[], bool> hasDoubleFunc)
         {
             var lowerArray = CreateDigitArray(lower);
             var upperArray = CreateDigitArray(upper);
@@ -20,9 +30,8 @@ namespace AOC2019.Days.D04
                 do
                 {
                     input = NextAscendingArray(input);
-                                       
 
-                    if (HasDouble(input))
+                    if (hasDoubleFunc(input))
                     {
                         if (!OutOfBounds(input, upperArray))
                         {
@@ -107,7 +116,7 @@ namespace AOC2019.Days.D04
             return false;
         }
 
-        public bool HasDouble(int[] input)
+        public bool HasDoublePartOne(int[] input)
         {
             for (var i = 0; i < input.Length - 1; i++)
             {
@@ -118,6 +127,39 @@ namespace AOC2019.Days.D04
             }
 
             return false;
+        }
+
+        public bool HasDoublePartTwo(int[] input)
+        {
+            var length = input.Length;
+
+            for (var i = 0; i < input.Length - 1; i++)
+            {
+                if (input[i] == input[i + 1])
+                {
+                    if (i == 0 && input[i] != input[i + 2])
+                    {
+                        return true;
+                    }
+
+                    if (i == length - 2 && input[i] != input[i - 1])
+                    {
+                        return true;
+                    }
+
+                    //if (input[i - 1] != input[i] && input[i + 2] != input[i])
+                    //{
+                    //    return true;
+                    //}
+
+                    if (i > 0 && input[i - 1] != input[i] && i < length - 2 && input[i] != input[i + 2])
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;           
         }
     }
 }

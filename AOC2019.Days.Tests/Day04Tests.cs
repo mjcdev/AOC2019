@@ -19,15 +19,57 @@ namespace AOC2019.Days.Tests
         }
 
         [Fact]
-        public void HasDouble_True()
+        public void HasDoublePartOne_True()
         {
-            new Day04().HasDouble(new[] { 4, 2, 2, 1, 0 }).Should().BeTrue();
+            new Day04().HasDoublePartOne(new[] { 4, 2, 2, 1, 0 }).Should().BeTrue();
         }
 
         [Fact]
-        public void HasDouble_False()
+        public void HasDoublePartOne_False()
         {
-            new Day04().HasDouble(new[] { 4, 2, 4, 2, 1, 0 }).Should().BeFalse();
+            new Day04().HasDoublePartOne(new[] { 4, 2, 4, 2, 1, 0 }).Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasDoublePartTwo_True()
+        {
+            new Day04().HasDoublePartTwo(new[] { 4, 2, 2, 1, 0 }).Should().BeTrue();
+        }
+
+        [Fact]
+        public void HasDoublePartTwo_Start()
+        {
+            new Day04().HasDoublePartTwo(new[] { 1, 1, 2, 2, 3, 3, }).Should().BeTrue();
+        }
+
+        [Fact]
+        public void HasDoublePartTwo_End()
+        {
+            new Day04().HasDoublePartTwo(new[] { 1, 1, 1, 1, 2, 2, }).Should().BeTrue();
+        }
+
+        [Fact]
+        public void HasDoublePartTwo_False()
+        {
+            new Day04().HasDoublePartTwo(new[] { 4, 2, 4, 2, 1, 0 }).Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasDoublePartTwo_False_TooMany()
+        {
+            new Day04().HasDoublePartTwo(new[] { 4, 2, 2, 2, 4, 2, 1, 0 }).Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasDoublePartTwo_False_End()
+        {
+            new Day04().HasDoublePartTwo(new[] { 1, 2, 3, 4, 4, 4 }).Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasDoublePartTwo_False_Start()
+        {
+            new Day04().HasDoublePartTwo(new[] { 2, 2, 2, 4 }).Should().BeFalse();
         }
 
         [Fact]
@@ -69,7 +111,13 @@ namespace AOC2019.Days.Tests
         [Fact]
         public void DayFourPartOne()
         {
-            var result = new Day04().CalculateMatches(206938, 679128);
+            var result = new Day04().CalculateMatchesPartOne(206938, 679128);
+        }
+
+        [Fact]
+        public void DayFourPartTwo()
+        {
+            var result = new Day04().CalculateMatchesPartTwo(206938, 679128);
         }
     }
 }
