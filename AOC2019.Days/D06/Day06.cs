@@ -56,5 +56,47 @@ namespace AOC2019.Days.D06
             return flattened;
         }
 
+        public int NumberOfOrbitalJumpsBetween(string start, string end, IEnumerable<InputModel> inputModels)
+        {
+            var treeNode = CreateTree(inputModels);
+
+            var flattened = FlattenTree(treeNode, new List<TreeNode>());
+
+            var startNode = flattened.First(f => f.Value == start);
+
+            var endNode = flattened.First(f => f.Value == end);
+
+            var startParents = GetPathToCentreOfMassFromNode(startNode).ToArray();
+            var endParents = GetPathToCentreOfMassFromNode(endNode).ToArray();
+
+            for (var startIndex = 0; startIndex < startParents.Length; startIndex++)
+            {
+                for (var endIndex = 0; endIndex < endParents.Length; endIndex++)
+                {
+                    if (startParents[startIndex] == endParents[endIndex])
+                    {
+                        return startIndex + endIndex;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
+        public IEnumerable<string> GetPathToCentreOfMassFromNode(TreeNode node)
+        {
+            var parents = new List<string>();
+
+            var currentNode = node;
+
+            while(currentNode.Parent != null)
+            {
+                parents.Add(currentNode.Parent.Value);
+                currentNode = currentNode.Parent;
+            }
+
+            return parents;
+        }
+
     }
 }
