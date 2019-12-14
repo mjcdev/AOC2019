@@ -10,16 +10,19 @@ namespace AOC2019.Days.Tests.Abstract
     {
         public IEnumerable<T> ReadLineSeperatedFile<T>(string fileName, Func<string, T> function)
         {
-            var filePath = Path.Combine("Inputs", fileName);
-
-            return File.ReadAllLines(filePath).Select(function);
+            return File.ReadAllLines(FilePath(fileName)).Select(function);
         }
 
         public IEnumerable<T> ReadCommaSeperatedLine<T>(string fileName, Func<string, T> function)
         {
-            var filePath = Path.Combine("Inputs", fileName);
+            return File.ReadAllText(FilePath(fileName)).Split(',').Select(function);
+        }
 
-            return File.ReadAllText(filePath).Split(',').Select(function);
-        }        
+        public IEnumerable<T> ReadFromCharArray<T>(string fileName, Func<char, T> function)
+        {
+            return File.ReadAllText(FilePath(fileName)).ToCharArray().Select(function);
+        }
+
+        private string FilePath(string fileName) => Path.Combine("Inputs", fileName);
     }
 }
