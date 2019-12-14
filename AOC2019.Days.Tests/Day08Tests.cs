@@ -3,6 +3,7 @@ using AOC2019.Days.Tests.Abstract;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Xunit;
 
@@ -45,6 +46,18 @@ namespace AOC2019.Days.Tests
 
             layer.CountLayer(2).Should().Be(2);
             layer.CountLayer(1).Should().Be(1);
+        }
+        
+        [Fact]
+        public void DayEightPartTwo()
+        {
+            var input = ReadFromCharArray("Day08.txt", c => int.Parse(c.ToString()));
+
+            var directory = "Outputs";
+
+            Directory.CreateDirectory(directory);
+
+            NewDay().RenderTransmission(input, Path.Combine(directory, "Day08.bmp"), 25, 6);
         }
 
         private Day08 NewDay()

@@ -11,5 +11,10 @@ namespace AOC2019.Days.D08
         {
             return this.SelectMany(r => r).Count(v => v == value);
         }
+
+        public int GetPixelValueFromLayer(int x, int y)
+        {
+            return this[y][x];
+        }
     }
 }
