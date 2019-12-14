@@ -36,12 +36,12 @@ namespace AOC2019.Days.Tests
 
             var maximum = combinations.Max(c => day.CalculateOutput(c, input, 0));
         }
-
+               
         [Theory]
         [InlineData(new[] { 3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26, 27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5 }, new[] { 9, 8, 7, 6, 5, }, 139629729)]
         public void CalculateOutputUntilHalted(int[] inputArray, int[] combination, int expected)
         {
-            new Day07().CalculateOutputUntilHalted(combination, inputArray, 0).Should().Be(expected);
+            new Day07().CalculateOutputUntilHalted(combination, inputArray).Should().Be(expected);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace AOC2019.Days.Tests
 
             var input = ReadCommaSeperatedLine("Day07.txt", i => int.Parse(i)).ToArray();
 
-            var maximum = combinations.Max(c => day.CalculateOutputUntilHalted(c, input, 0));
+            var maximum = combinations.Max(c => day.CalculateOutputUntilHalted(c, input));
         }
     }
 }
