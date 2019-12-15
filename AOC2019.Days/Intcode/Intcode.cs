@@ -16,6 +16,7 @@ namespace AOC2019.Days.Intcode
         private const int JumpIfFalse = 6;
         private const int LessThan = 7;
         private const int Equals = 8;
+        private const int RelativeBaseOffset = 9;
 
         private const int ParameterLengthFour = 4;
         private const int ParameterLengthThree = 3;
@@ -23,21 +24,28 @@ namespace AOC2019.Days.Intcode
 
         private const int PositionMode = 0;
         private const int ImmediateMode = 1;
+        private const int RelativeMode = 2;
 
-        private int[] _currentState;
-        private int _userInput;
-        private int _currentOutput;
+        private long[] _currentState;
+        private long _userInput;
+        private long _currentOutput;
 
-        private int _index = 0;
+        private long _index = 0;
         private bool _useUserInput = true;
+        private long _relativeAddress = 0;
 
-        public Intcode(IEnumerable<int> input, int userInput)
+        private int _memorySize = 100000;
+
+        public Intcode(IEnumerable<long> input, long userInput)
         {
             _currentState = input.ToArray();
+
+            Array.Resize(ref _currentState, _memorySize);
+
             _userInput = userInput;
         }
 
-        public (bool halt, int output, int[] state) Execute(int thrusterOutput)
+        public (bool halt, long output, long[] state) Execute(long thrusterOutput)
         {
             while (true)
             {
@@ -48,28 +56,30 @@ namespace AOC2019.Days.Intcode
                 var firstParameterMode = instruction % 10;
                 instruction /= 10;
                 var secondParameterMode = instruction % 10;
-
+                instruction /= 10;
+                var thirdParameterMode = instruction % 10;
+                                
                 if (opcode == Addition)
                 {
                     var first = GetParameter(firstParameterMode, _index + 1);
                     var second = GetParameter(secondParameterMode, _index + 2);
-                    var third = _currentState[_index + 3];
 
-                    _currentState[third] = first + second;
+                    SetParameter(thirdParameterMode, _index + 3, first + second);
+
                     _index += ParameterLengthFour;
                 }
                 else if (opcode == Multiply)
                 {
                     var first = GetParameter(firstParameterMode, _index + 1);
                     var second = GetParameter(secondParameterMode, _index + 2);
-                    var third = _currentState[_index + 3];
 
-                    _currentState[third] = first * second;
+                    SetParameter(thirdParameterMode, _index + 3, first * second);
+                    
                     _index += ParameterLengthFour;
                 }
                 else if (opcode == Input)
                 {
-                    int inputValue;
+                    long inputValue;
                     if (_useUserInput)
                     {
                         inputValue = _userInput;
@@ -80,7 +90,8 @@ namespace AOC2019.Days.Intcode
                         inputValue = thrusterOutput;
                     }
 
-                    _currentState[_currentState[_index + 1]] = inputValue;
+                    SetParameter(firstParameterMode, _index + 1, inputValue);
+                        
                     _index += ParameterLengthTwo;
                 }
                 else if (opcode == Output)
@@ -126,9 +137,8 @@ namespace AOC2019.Days.Intcode
                 {
                     var first = GetParameter(firstParameterMode, _index + 1);
                     var second = GetParameter(secondParameterMode, _index + 2);
-                    var third = _currentState[_index + 3];
 
-                    _currentState[third] = first < second ? 1 : 0;
+                    SetParameter(thirdParameterMode, _index + 3, first < second ? 1 : 0);
 
                     _index += ParameterLengthFour;
                 }
@@ -136,11 +146,17 @@ namespace AOC2019.Days.Intcode
                 {
                     var first = GetParameter(firstParameterMode, _index + 1);
                     var second = GetParameter(secondParameterMode, _index + 2);
-                    var third = _currentState[_index + 3];
 
-                    _currentState[third] = first == second ? 1 : 0;
+                    SetParameter(thirdParameterMode, _index + 3, first == second ? 1 : 0);
 
                     _index += ParameterLengthFour;
+                }
+                else if (opcode == RelativeBaseOffset)
+                {
+                    var first = GetParameter(firstParameterMode, _index + 1);
+
+                    _relativeAddress += first;
+                    _index += ParameterLengthTwo;
                 }
                 else if (opcode == Finish)
                 {
@@ -149,7 +165,23 @@ namespace AOC2019.Days.Intcode
             }
         }
 
-        private int GetParameter(int parameterMode, int parameterIndex)
+        private void SetParameter(long parameterMode, long parameterIndex, long value)
+        {
+            if (parameterMode == RelativeMode)
+            {
+                _currentState[_currentState[parameterIndex] + _relativeAddress] = value;
+                return;
+            }
+            else if (parameterMode == PositionMode)
+            {
+                _currentState[_currentState[parameterIndex]] = value;
+                return;
+            }
+
+            throw new Exception();
+        }
+
+        private long GetParameter(long parameterMode, long parameterIndex)
         {
             if (parameterMode == PositionMode)
             {
@@ -158,6 +190,10 @@ namespace AOC2019.Days.Intcode
             else if (parameterMode == ImmediateMode)
             {
                 return _currentState[parameterIndex];
+            }
+            else if (parameterMode == RelativeMode)
+            {
+                return _currentState[_currentState[parameterIndex] + _relativeAddress];
             }
 
             throw new Exception();

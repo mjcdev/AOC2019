@@ -6,16 +6,16 @@ namespace AOC2019.Days.D07
 {
     public class Day07
     {
-        public IEnumerable<IList<int>> GetCombinations(IEnumerable<int> inputs)
+        public IEnumerable<IList<long>> GetCombinations(IEnumerable<long> inputs)
         {
-            var permutations = new Permutations<int>(inputs.ToArray());
+            var permutations = new Permutations<long>(inputs.ToArray());
 
             return permutations;
         }
 
-        public int CalculateOutput(IList<int> combination, int[] input, int thrusterInput)
+        public long CalculateOutput(IList<long> combination, long[] input, long thrusterInput)
         {
-            int result = 0;
+            long result = 0;
 
             var intcodes = combination.Select(c => new Intcode.Intcode(input, c));
 
@@ -30,14 +30,14 @@ namespace AOC2019.Days.D07
             return result;
         }
 
-        public int CalculateOutputUntilHalted(IList<int> combination, int[] input)
+        public long CalculateOutputUntilHalted(IList<long> combination, long[] input)
         {
-            int result = 0;
+            long result = 0;
             var halted = false;
 
             var intcodes = combination.Select(c => new Intcode.Intcode(input, c)).ToList();
 
-            var thrusterInput = 0;
+            long thrusterInput = 0;
 
             while (!halted)
             {
