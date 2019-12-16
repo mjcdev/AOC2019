@@ -28,7 +28,7 @@ namespace AOC2019.Days.Tests
 
             var asteroids = day10.BuildAsteroids(lines).ToList();
 
-            var count = asteroids[0].CountVisibleAsteroids(asteroids);
+            var count = day10.CountVisibleAsteroids(asteroids[0], asteroids);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace AOC2019.Days.Tests
 
             var asteroids = day10.BuildAsteroids(lines).ToList();
 
-            var max = asteroids.Max(a => a.CountVisibleAsteroids(asteroids));
+            var max = day10.MaxVisibleAsteroids(asteroids);
 
             max.Should().Be(8);
         }
@@ -54,8 +54,49 @@ namespace AOC2019.Days.Tests
 
             var asteroids = day10.BuildAsteroids(lines).ToList();
 
-            var max = asteroids.Max(a => a.CountVisibleAsteroids(asteroids));
+            var max = day10.MaxVisibleAsteroids(asteroids);
         }
+
+        [Fact]
+        public void BestAsteroid()
+        {
+            var lines = ReadLineSeperatedFile("Day10.txt", i => i);
+
+            var day10 = NewDay();
+
+            var asteroids = day10.BuildAsteroids(lines).ToList();
+
+            var best = day10.MostVisibleAsteroid(asteroids);
+        }
+
+        [Fact]
+        public void Obliterate()
+        {
+            var lines = ReadLineSeperatedFile("Day10/ExampleTwo.txt", i => i);
+
+            var day10 = NewDay();
+
+            var asteroids = day10.BuildAsteroids(lines).ToList();
+
+            var best = asteroids.First(a => a.X == 8 && a.Y == 3);
+
+            var result = day10.ObliterateAll(asteroids, best, 10);
+        }
+
+        [Fact]
+        public void DayTenPartTwo()
+        {
+            var lines = ReadLineSeperatedFile("Day10.txt", i => i);
+
+            var day10 = NewDay();
+
+            var asteroids = day10.BuildAsteroids(lines).ToList();
+            
+            var best = day10.MostVisibleAsteroid(asteroids);
+
+            var result = day10.ObliterateAll(asteroids, best, 200);
+        }
+
 
         private Day10 NewDay()
         {
