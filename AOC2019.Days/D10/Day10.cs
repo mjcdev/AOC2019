@@ -49,7 +49,17 @@ namespace AOC2019.Days.D10
 
         public double AngleBetweenAsteroids(Asteroid root, Asteroid target)
         {
-            return Math.Atan2(target.Y - root.Y, target.X - root.X) * (180 / Math.PI);
+            var w = target.X - root.X;
+            var h = target.Y - root.Y;
+
+            var atan = 90 - Math.Atan2(h, w) * (180 /Math.PI);
+
+            if (atan < 0)
+            {
+                atan += 360;
+            }
+
+            return atan % 360;           
         }
 
         public int ManhattanDistance(Asteroid root, Asteroid target)

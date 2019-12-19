@@ -97,6 +97,25 @@ namespace AOC2019.Days.Tests
             var result = day10.ObliterateAll(asteroids, best, 200);
         }
 
+        [Theory]
+        //[InlineData(2, 3, 30)]
+        //[InlineData(3, 2, 60)]
+        [InlineData(1, 0, 90)]
+        [InlineData(0, 1, 0)]
+        [InlineData(-1, 0, 270)]
+        [InlineData(0, -1, 180)]
+        [InlineData(1, 1, 45)]
+        [InlineData(5, 5, 45)]
+        [InlineData(-1, 1, 315)]
+        [InlineData(-1, -1, 225)]
+        [InlineData(1, -1, 135)]
+        public void AnglesFromVectors(int x, int y, double expectedAngle)
+        {
+            var angle = NewDay().AngleBetweenAsteroids(new Asteroid(0, 0), new Asteroid(x, y));
+
+            angle.Should().Be(expectedAngle);
+        }
+
 
         private Day10 NewDay()
         {
