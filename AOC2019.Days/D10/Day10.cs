@@ -50,9 +50,11 @@ namespace AOC2019.Days.D10
         public double AngleBetweenAsteroids(Asteroid root, Asteroid target)
         {
             var w = target.X - root.X;
-            var h = target.Y - root.Y;
 
-            var atan = 90 - Math.Atan2(h, w) * (180 /Math.PI);
+            // Y Axis is inverted
+            var h = root.Y - target.Y;
+
+            var atan = 90 - (Math.Atan2(h, w) * (180 / Math.PI));
 
             if (atan < 0)
             {
