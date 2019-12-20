@@ -100,10 +100,7 @@ namespace AOC2019.Days.Intcode
                     
                     _index += ParameterLengthTwo;
 
-                    if (_currentOutput != 0)
-                    {
-                        return (false, _currentOutput, _currentState);
-                    }
+                    return (false, _currentOutput, _currentState);                    
                 }
                 else if (opcode == JumpIfTrue)
                 {
