@@ -45,7 +45,7 @@ namespace AOC2019.Days.Intcode
             _userInput = userInput;
         }
 
-        public (bool halt, long output, long[] state) Execute(long thrusterOutput)
+        public (bool halt, long output, long[] state) Execute(long? thrusterOutput = null)
         {
             while (true)
             {
@@ -79,7 +79,7 @@ namespace AOC2019.Days.Intcode
                 }
                 else if (opcode == Input)
                 {
-                    long inputValue;
+                    long? inputValue;
                     if (_useUserInput)
                     {
                         inputValue = _userInput;
@@ -90,8 +90,11 @@ namespace AOC2019.Days.Intcode
                         inputValue = thrusterOutput;
                     }
 
-                    SetParameter(firstParameterMode, _index + 1, inputValue);
-                        
+                    if (inputValue != null)
+                    {
+                        SetParameter(firstParameterMode, _index + 1, inputValue.Value);
+                    }
+
                     _index += ParameterLengthTwo;
                 }
                 else if (opcode == Output)
